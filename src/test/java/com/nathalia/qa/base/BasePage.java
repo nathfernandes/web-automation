@@ -32,6 +32,10 @@ public abstract class BasePage {
     }
 
     protected List<WebElement> findAll(By locator) {
-        return driver.findElements(locator);
+        return driver.findElements(locator)
+                .stream()
+                .filter(WebElement::isDisplayed)
+                .filter(e -> !e.getText().trim().isEmpty())
+                .toList();
     }
 }
