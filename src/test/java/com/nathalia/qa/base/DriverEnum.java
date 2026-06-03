@@ -3,15 +3,25 @@ package com.nathalia.qa.base;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public enum DriverEnum {
-    CHROME{
+    CHROME {
         @Override
         public WebDriver create() {
             WebDriverManager.chromedriver().setup();
 
-            return new ChromeDriver();
+            ChromeOptions options = new ChromeOptions();
+
+            if ("true".equals(System.getProperty("headless"))) {
+                options.addArguments("--headless=new");
+                options.addArguments("--no-sandbox");
+                options.addArguments("--disable-dev-shm-usage");
+                options.addArguments("--window-size=1920,1080");
+            }
+
+            return new ChromeDriver(options);
         }
     },
 
