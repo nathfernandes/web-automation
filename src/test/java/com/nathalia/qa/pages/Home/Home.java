@@ -15,18 +15,7 @@ public class Home extends BasePage {
 
     @Step("Open search")
     public Home openSearch() {
-        System.out.println("URL: " + driver.getCurrentUrl());
-
-        var elements = driver.findElements(HomeElements.SEARCH_BUTTON);
-
-        System.out.println("Search icons found: " + elements.size());
-
-        if (!elements.isEmpty()) {
-            System.out.println("Displayed: " + elements.get(0).isDisplayed());
-        }
-
         click(HomeElements.SEARCH_BUTTON);
-
         return this;
     }
 }
