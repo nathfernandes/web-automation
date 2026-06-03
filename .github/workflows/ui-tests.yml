@@ -9,45 +9,61 @@ on:
 
   pull_request:
 
+permissions:
+  contents: write
+
 jobs:
   web-tests:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: temurin
-        java-version: 17
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
 
-    - name: Cache Maven
-      uses: actions/cache@v4
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+      - name: Cache Maven
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-    - name: Run Tests
-      run: mvn clean test -Dheadless=true
+      - name: Run Tests
+        run: mvn clean test -Dheadless=true
 
-    - name: Generate Allure Report
-      if: always()
-      run: mvn allure:report
+      - name: Generate Allure Report
+        if: always()
+        run: mvn allure:report
 
-    - name: Upload Allure Report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: allure-report
-        path: target/site/allure-maven-plugin
+      - name: Prepare Allure Pages
+        if: always()
+        run: |
+          mkdir -p public
+          cp -r target/site/allure-maven-plugin/* public/
 
-    - name: Upload Surefire Reports
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: surefire-reports
-        path: target/surefire-reports
+      - name: Deploy Allure Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+
+      - name: Upload Allure Report (Artifact fallback)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: target/site/allure-maven-plugin
+
+      - name: Upload Surefire Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports
