@@ -30,15 +30,18 @@ jobs:
         run: mvn clean test -Dheadless=true
 
       - name: Generate Allure Report
+        if: always()
         run: mvn allure:report
 
       - name: Upload Allure report artifact
+        if: always()
         uses: actions/upload-pages-artifact@v3
         with:
           path: target/allure-report
 
   deploy:
     needs: web-tests
+    if: always()
     runs-on: ubuntu-latest
 
     permissions:
