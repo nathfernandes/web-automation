@@ -5,10 +5,15 @@ import com.nathalia.qa.components.Search.Search;
 import com.nathalia.qa.constants.ProjectConstants;
 import com.nathalia.qa.pages.BlogArticle.BlogArticle;
 import com.nathalia.qa.pages.Home.Home;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@Epic("Agi Blog")
+@Feature("Search Suggestions")
+@DisplayName("Search Suggestions Test")
 public class SearchSuggestionsTest extends BaseTest {
 
     @BeforeEach

@@ -2,15 +2,14 @@ name: UI Tests
 
 on:
   workflow_dispatch:
-
   push:
-    branches:
-      - main
-
+    branches: [ "main" ]
   pull_request:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   web-tests:
@@ -25,45 +24,32 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-
-      - name: Cache Maven
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          cache: maven
 
       - name: Run Tests
         run: mvn clean test -Dheadless=true
 
       - name: Generate Allure Report
-        if: always()
         run: mvn allure:report
 
-      - name: Prepare Allure Pages
-        if: always()
-        run: |
-          mkdir -p public
-          cp -r target/site/allure-maven-plugin/* public/
-
-      - name: Deploy Allure Report to GitHub Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload Allure report artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          path: target/allure-report
 
-      - name: Upload Allure Report (Artifact fallback)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report
-          path: target/site/allure-maven-plugin
+  deploy:
+    needs: web-tests
+    runs-on: ubuntu-latest
 
-      - name: Upload Surefire Reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: surefire-reports
-          path: target/surefire-reports
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

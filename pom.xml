@@ -21,7 +21,6 @@
     <allure.version>2.29.1</allure.version>
   </properties>
 
-  <!-- 🔒 Forces consistent JUnit Platform versions -->
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -66,7 +65,7 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- ✅ Correct Allure integration -->
+    <!-- Allure -->
     <dependency>
       <groupId>io.qameta.allure</groupId>
       <artifactId>allure-junit5</artifactId>
@@ -90,7 +89,7 @@
         </configuration>
       </plugin>
 
-      <!-- JUnit 5 (Surefire) -->
+      <!-- JUnit 5 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>

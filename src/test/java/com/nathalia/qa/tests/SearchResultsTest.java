@@ -6,10 +6,16 @@ import com.nathalia.qa.constants.ProjectConstants;
 import com.nathalia.qa.pages.Home.Home;
 import com.nathalia.qa.pages.SearchResult.SearchResult;
 import com.nathalia.qa.pages.BlogArticle.BlogArticle;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@Epic("Agi Blog")
+@Feature("Search Results")
+@DisplayName("Search Results Test")
 public class SearchResultsTest extends BaseTest {
 
     @BeforeEach
