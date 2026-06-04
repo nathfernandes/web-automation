@@ -30,6 +30,7 @@ Antes de rodar o projeto, você precisa ter instalado:
 
 - Java 17+
 - Maven 3.8+
+- Allure CLI (opcional para execução local do report)
 - Google Chrome (ou Firefox, se configurado)
 - Git
 
@@ -87,15 +88,15 @@ https://nathfernandes.github.io/web-automation/
 
 ```
 src
- ├── test
- │    ├── java
- │    │    ├── com.nathalia.qa
- │    │    │    ├── base
- │    │    │    ├── components
- │    │    │    ├── constants
- │    │    │    ├── pages
- │    │    │    ├── tests
- │    │    │    ├── utils
+├── test
+│    └── java
+│         └── com.nathalia.qa
+│              ├── base
+│              ├── components
+│              ├── constants
+│              ├── pages
+│              ├── tests
+│              └── utils
 ```
 
 ---
